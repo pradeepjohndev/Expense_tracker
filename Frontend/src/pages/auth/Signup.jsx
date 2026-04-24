@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Input from '../../components/Input/Input';
 import { MdAttachMoney } from "react-icons/md";
+import Profilephotoselector from '../../components/Input/Profilephotoselector';
+import Input from '../../components/Input/Input';
 
 export default function Signup() {
+    const [profilePic, setProfilepic] = useState()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
@@ -23,6 +26,11 @@ export default function Signup() {
 
         if (password.length < 6) {
             setError("Password must be at least 6 characters");
+            return;
+        }
+
+        if (!username || username.trim() === '') {
+            setError('Please enter username');
             return;
         }
 
@@ -51,6 +59,10 @@ export default function Signup() {
                     <h2 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
                     <p className="text-gray-600 mb-6">Sign up to get started</p>
                     <form onSubmit={handleSubmit} className="flex flex-col">
+
+                        <Profilephotoselector image={profilePic} setImage={setProfilepic} />
+                        <input type="text" placeholder="Username" className="mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+                            value={username} onChange={(e) => setUsername(e.target.value)} />
                         <input type="email" placeholder="Email address" className="mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
                             value={email} onChange={(e) => setEmail(e.target.value)} />
 
