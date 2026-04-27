@@ -1,9 +1,7 @@
 const JWT = require('jsonwebtoken');
 const User = require('../Model/Users');
-const { token } = require('morgan');
 
 const generateToken = (id) => {
-    console.log(process.env.JWT_secret);
     return JWT.sign({ id }, process.env.JWT_secret, { expiresIn: "1h" });
 };
 
@@ -43,6 +41,7 @@ exports.loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
+
         if (!user || !(await user.comparePassword(password))) {
             return res.status(400).json({ message: "invalid credintials" });
         }
@@ -64,6 +63,7 @@ exports.getUserinfo = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: "user not found" });
         }
+
         res.status(200).json(user);
     }
     catch (err) {
