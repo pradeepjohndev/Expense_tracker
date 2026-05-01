@@ -12,7 +12,7 @@ const PORT = process.env.PORT
 const app = express();
 
 app.use(cors({
-  origin: process.env.Client || '*',
+  origin: '*',
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-type", "Authorization"],
 }));

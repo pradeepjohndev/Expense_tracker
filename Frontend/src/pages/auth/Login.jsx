@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from '../../components/Input/Input'
 import { MdAttachMoney } from "react-icons/md";
+import axiosInstance from "../../utils/axiosinstance";
+import { API_PATHS } from "../../utils/apipath";
 
 const Login = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -12,7 +15,7 @@ const Login = () => {
         return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validateEmail(email)) {
@@ -26,7 +29,29 @@ const Login = () => {
         }
 
         setError("");
-        console.log("Login Data:", { email, password });
+
+        try {
+            const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+                email,
+                password,
+            });
+            const { token } = response.data;
+
+            if (token) {
+                localStorage.setItem("token", token);
+                navigate('/home');
+            }
+        } catch (err) {
+            console.log(err); // 🔥 IMPORTANT
+            console.log(err.response);
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message || "login failed. please try again later");
+            }
+            else {
+                setError("something went wrong. please try again later");
+            }
+        }
+
     };
 
     return (
