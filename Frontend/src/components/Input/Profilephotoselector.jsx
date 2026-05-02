@@ -37,7 +37,7 @@ function Profilephotoselector({ image, setImage }) {
                     </div>
                 ) : (
                     <div className='relative'>
-                        <img src={previewUrl} alt="profile photo" className='w-20 h-20 flex items-center justify-center' />
+                        <img src={previewUrl} alt="profile photo" className='w-20 h-20 rounded-full flex items-center justify-center' />
                         <button type="button" onClick={handleRemoveImage} className='w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 hover:cursor-pointer'>
                             <LuTrash />
                         </button>

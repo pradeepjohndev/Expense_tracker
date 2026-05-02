@@ -22,6 +22,6 @@ export const API_PATHS = {
         DOWNLOAD_EXPENSE: "/api/v1/expense/downloadexec",
     },
     IMAGE: {
-        UPLOAD_IMAGE: "/api/v1/image/upload",
+        UPLOAD_IMAGE: "/api/v1/auth/upload-image",
     },
 };

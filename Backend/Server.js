@@ -7,6 +7,7 @@ const authRoute = require('./Route/AuthRoute')
 const incomeRoute = require('./Route/IncomeRoute')
 const expenseRoute = require('./Route/ExpenseRoute')
 const dashboard = require('./Route/DashboardRoute')
+const upload = require('./Middleware/uploadMiddleware')
 
 const PORT = process.env.PORT
 const app = express();

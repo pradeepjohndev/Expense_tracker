@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from '../../components/Input/Input'
 import { MdAttachMoney } from "react-icons/md";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apipath";
+import { UserContext } from "../../context/userContext";
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const { updateUser } = useContext(UserContext);
 
     const validateEmail = (email) => {
         return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
@@ -35,16 +38,15 @@ const Login = () => {
                 email,
                 password,
             });
-            const { token } = response.data;
+            const { token, user } = response.data;
 
             if (token) {
                 localStorage.setItem("token", token);
+                updateUser(user)
                 navigate('/home');
             }
         } catch (err) {
-            console.log(err); // 🔥 IMPORTANT
-            console.log(err.response);
-            if (err.response && err.response.data && err.response.data.message) {
+            if (err.response && err.response.data) {
                 setError(err.response.data.message || "login failed. please try again later");
             }
             else {

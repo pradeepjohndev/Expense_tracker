@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Accept': 'application/json',
     },
 });
 
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
                 window.location.href = '/login';
             }
             else if (error.response.status === 403) {
-                console.log('access forbidden. please try again later');
+                window.location.href = '/Not_found';
             }
         }
         else if (error.request) {

@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdAttachMoney } from "react-icons/md";
 import Profilephotoselector from '../../components/Input/Profilephotoselector';
 import Input from '../../components/Input/Input';
+import axiosInstance from '../../utils/axiosinstance';
+import { API_PATHS } from '../../utils/apipath';
+import { UserContext } from '../../context/userContext';
+import uploadImage from '../../utils/uploadImage';
 
 export default function Signup() {
-    const [profilePic, setProfilepic] = useState()
+    const [profilePic, setProfilepic] = useState(null);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
+    const [fullName, setFullName] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
+    const { updateUser } = useContext(UserContext)
 
     const validateEmail = (email) => {
         return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!fullName) {
+            setError('please enter full name');
+            return;
+        }
 
         if (!validateEmail(email)) {
             setError("Enter a valid Gmail address");
@@ -29,8 +41,8 @@ export default function Signup() {
             return;
         }
 
-        if (!username || username.trim() === '') {
-            setError('Please enter username');
+        if (!fullName || fullName.trim() === '') {
+            setError('Please enter full name');
             return;
         }
 
@@ -40,7 +52,37 @@ export default function Signup() {
         }
 
         setError("");
-        console.log(email, password);
+
+        try {
+            let profileImageUrl = null;
+            if (profilePic) {
+                const imageUploadRes = await uploadImage(profilePic);
+                profileImageUrl = imageUploadRes.imageUrl || null;
+            }
+
+            const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+                fullName,
+                email,
+                password,
+                profileImageUrl
+            });
+
+            const { token, user } = response.data;
+
+            if (token) {
+                localStorage.setItem("token", token);
+                updateUser(user);
+                navigate('/home');
+            }
+        }
+        catch (err) {
+            if (err.response && err.response.data) {
+                setError(err.response.data.message || "login failed. please try again later");
+            }
+            else {
+                setError("something went wrong. please try again later");
+            }
+        }
     };
 
     return (
@@ -61,8 +103,8 @@ export default function Signup() {
                     <form onSubmit={handleSubmit} className="flex flex-col">
 
                         <Profilephotoselector image={profilePic} setImage={setProfilepic} />
-                        <input type="text" placeholder="Username" className="mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
-                            value={username} onChange={(e) => setUsername(e.target.value)} />
+                        <input type="text" placeholder="Full Name" className="mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
+                            value={fullName} onChange={(e) => setFullName(e.target.value)} />
                         <input type="email" placeholder="Email address" className="mb-4 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition"
                             value={email} onChange={(e) => setEmail(e.target.value)} />
 
