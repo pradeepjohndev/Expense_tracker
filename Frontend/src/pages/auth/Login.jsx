@@ -4,7 +4,7 @@ import Input from '../../components/Input/Input'
 import { MdAttachMoney } from "react-icons/md";
 import axiosInstance from "../../utils/axiosinstance";
 import { API_PATHS } from "../../utils/apipath";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/UserContext.jsx";
 
 const Login = () => {
     const navigate = useNavigate();

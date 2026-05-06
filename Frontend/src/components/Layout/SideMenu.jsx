@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { sideMenuData } from '../../utils/data';
-import { UserContext } from '../../context/userContext';
+import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { HiOutlineUserCircle } from "react-icons/hi2";
+import CharAvatar from '../Cards/Charavatar';
 
 function SideMenu() {
     const { user, clearUser } = useContext(UserContext);
@@ -30,7 +31,7 @@ function SideMenu() {
             <div className="flex flex-col items-center justify-center py-6 border-b border-gray-100">
                 {user?.profileImageUrl
                     ? (<img src={user.profileImageUrl} alt="Profile" className="w-20 h-20 rounded-full object-cover shadow-sm" />)
-                    : (<HiOutlineUserCircle className="w-20 h-20 text-gray-400" />)}
+                    : <CharAvatar fullname={user?.fullname} width="w-20" height="h-20" style="text-xl" />}
                 <h5 className="mt-3 text-gray-900 font-semibold text-sm text-center">
                     {user?.fullName || "Guest User"}
                 </h5>

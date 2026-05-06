@@ -5,7 +5,7 @@ import Profilephotoselector from '../../components/Input/Profilephotoselector';
 import Input from '../../components/Input/Input';
 import axiosInstance from '../../utils/axiosinstance';
 import { API_PATHS } from '../../utils/apipath';
-import { UserContext } from '../../context/userContext';
+import { UserContext } from '../../context/UserContext.jsx';
 import uploadImage from '../../utils/uploadImage';
 
 export default function Signup() {

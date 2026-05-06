@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate, Navigate, Router } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import React from 'react';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
@@ -8,23 +8,22 @@ import Income from './pages/dashboard/Income';
 import Transaction from './pages/dashboard/Transaction';
 import Analytics from './pages/dashboard/Analytics';
 import Not_found from "./pages/dashboard/Not_found";
-import UserContextProvider, { UserContext } from "./context/userContext";
+import UserContextProvider from "./context/UserContextProvider";
 
 function App() {
-  const Navigate = useNavigate();
   return (
     <>
       <UserContextProvider>
         <div>
           <Routes>
-            <Route path='/' element={<root />} />
+            <Route path='/' element={<Root />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/Sign" exact element={<Signup />} />
-            <Route path="/Home" exact element={<Home />} />
-            <Route path="/Expense" exact element={<Expenses />} />
-            <Route path="/income" exact element={<Income />} />
-            <Route path="/transaction" exact element={<Transaction />} />
-            <Route path="/analytics" exact element={<analytics />} />
+            <Route path="/Sign" element={<Signup />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/Expense" element={<Expenses />} />
+            <Route path="/income" element={<Income />} />
+            <Route path="/transaction" element={<Transaction />} />
+            <Route path="/analytics" element={<Analytics />} />
 
             <Route path="*" element={<Not_found />} />
           </Routes>
@@ -37,6 +36,6 @@ function App() {
 const Root = () => {
   const isauth = !!localStorage.getItem('token');
 
-  return isauth ? (<Navigate to="dashboard" />) : (<Navigate to="Login" />)
+  return isauth ? (<Navigate to="/home" />) : (<Navigate to="/login" />)
 }
 export default App;
